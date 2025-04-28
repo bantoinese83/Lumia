@@ -1,0 +1,112 @@
+@import '../../styles/constants.scss';
+
+.animated-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: spacing('sm') spacing('md');
+  border-radius: radius('md');
+  border: none;
+  font-family: font-family('primary');
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all map-get($transitions, 'fast');
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+    opacity: 0;
+    transition: opacity map-get($transitions, 'fast');
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+
+  .button-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: spacing('xs');
+  }
+
+  // Variants
+  &--primary {
+    background: color('blue-500');
+    color: white;
+    box-shadow: shadow('sm');
+
+    &:hover {
+      background: color('blue-800');
+      box-shadow: shadow('md');
+    }
+  }
+
+  &--secondary {
+    background: color('neutral-20');
+    color: color('neutral-90');
+    border: 1px solid color('neutral-30');
+
+    &:hover {
+      background: color('neutral-30');
+      border-color: color('neutral-40');
+    }
+  }
+
+  &--accent {
+    background: color('accent-red');
+    color: white;
+
+    &:hover {
+      filter: brightness(1.1);
+    }
+  }
+
+  // Sizes
+  &--small {
+    padding: spacing('xs') spacing('sm');
+    font-size: 0.875rem;
+  }
+
+  &--medium {
+    padding: spacing('sm') spacing('md');
+    font-size: 1rem;
+  }
+
+  &--large {
+    padding: spacing('md') spacing('lg');
+    font-size: 1.125rem;
+  }
+
+  // States
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &--loading {
+    cursor: wait;
+
+    .loading-spinner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .material-symbols-outlined {
+        animation: spin 1s linear infinite;
+        font-size: 1.25em;
+      }
+    }
+  }
+
+  // Animation keyframes
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+} 

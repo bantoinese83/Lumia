@@ -1,4 +1,6 @@
 import React from 'react';
+import { animated } from 'react-spring';
+import { useFadeIn } from '../../animations/useAnimations';
 import './interview-stages.scss';
 
 interface InterviewStage {
@@ -45,8 +47,11 @@ export const InterviewStages: React.FC<InterviewStagesProps> = ({ currentStage }
     }
   ];
 
+  // Using a simple fade animation with a slight delay for each stage
+  const fadeAnimation = useFadeIn(200);
+
   return (
-    <div className="interview-stages">
+    <animated.div className="interview-stages" style={fadeAnimation}>
       <div className="stages-container">
         {stages.map((stage, index) => (
           <React.Fragment key={stage.id}>
@@ -65,6 +70,6 @@ export const InterviewStages: React.FC<InterviewStagesProps> = ({ currentStage }
           </React.Fragment>
         ))}
       </div>
-    </div>
+    </animated.div>
   );
 }; 
