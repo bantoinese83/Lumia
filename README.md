@@ -1,126 +1,113 @@
-# Live API - Web Console
+# LOMIA - Live AI Mock Interviews
 
-This repository contains a react-based starter app for using the [Live API](<[https://ai.google.dev/gemini-api](https://ai.google.dev/api/multimodal-live)>) over a websocket. It provides modules for streaming audio playback, recording user media such as from a microphone, webcam or screen capture as well as a unified log view to aid in development of your application.
+LOMIA is an innovative web application that provides realistic mock interview experiences powered by AI. Using Google's Gemini API, it simulates real-world interview scenarios, offering personalized feedback and adaptive questioning based on your responses.
 
-[![Live API Demo](readme/thumbnail.png)](https://www.youtube.com/watch?v=J_q7JY1XxFE)
+<div align="center">
+  <img src="public/images/app-preview.jpg" alt="LOMIA Interface" width="800"/>
+  <p><em>LOMIA: AI-Powered Mock Interview Platform</em></p>
+</div>
 
-Watch the demo of the Live API [here](https://www.youtube.com/watch?v=J_q7JY1XxFE).
+## Features
+
+- 🎯 **Customizable Interview Settings**
+  - Choose interview type (Technical, Behavioral, Mixed)
+  - Select experience level and industry focus
+  - Customize target company style (e.g., FAANG-style interviews)
+  - Set interview duration and difficulty level
+
+- 🎤 **Interactive Voice Interface**
+  - Real-time voice interaction with AI interviewer
+  - Multiple AI interviewer personalities to choose from
+  - Natural conversation flow with context awareness
+
+- 📝 **Resume Analysis**
+  - Upload your resume for personalized interview focus
+  - AI-powered skills assessment
+  - Tailored question selection based on your experience
+
+- 🎥 **Video Integration**
+  - Optional webcam support for a more immersive experience
+  - Screen sharing capability for technical demonstrations
+  - Professional interview environment simulation
+
+- 💡 **Smart Feedback**
+  - Real-time feedback on your responses
+  - Detailed post-interview analysis
+  - Improvement suggestions and focus areas
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
+- A Gemini API key from Google
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/bantoinese83/Lumia.git
+cd Lumia
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create a `.env` file in the root directory with your API keys:
+```
+REACT_APP_GEMINI_API_KEY=your_api_key_here
+REACT_APP_GEMINI_VISION_API_KEY=your_api_key_here
+REACT_APP_GEMINI_DOC_API_KEY=your_api_key_here
+```
+
+4. Start the development server:
+```bash
+npm start
+```
+
+The application will be available at `http://localhost:3000`.
 
 ## Usage
 
-To get started, [create a free Gemini API key](https://aistudio.google.com/apikey) and add it to the `.env` file. Then:
+1. **Setup Your Interview**
+   - Click the settings icon in the header
+   - Configure your interview preferences
+   - Optionally upload your resume for personalized questions
 
-```
-$ npm install && npm start
-```
+2. **Start the Interview**
+   - Click "Start Interview" when ready
+   - Ensure your microphone is enabled
+   - Optionally enable your webcam
 
-We have provided several example applications on other branches of this repository:
+3. **During the Interview**
+   - Speak naturally to answer questions
+   - Use the control panel to manage audio/video settings
+   - View real-time feedback and guidance
 
-- [demos/GenExplainer](https://github.com/google-gemini/multimodal-live-api-web-console/tree/demos/genexplainer)
-- [demos/GenWeather](https://github.com/google-gemini/multimodal-live-api-web-console/tree/demos/genweather)
-- [demos/GenList](https://github.com/google-gemini/multimodal-live-api-web-console/tree/demos/genlist)
+## Technologies Used
 
-## Example
+- React.js
+- TypeScript
+- Google Gemini API
+- WebRTC for audio/video
+- SCSS for styling
 
-Below is an example of an entire application that will use Google Search grounding and then render graphs using [vega-embed](https://github.com/vega/vega-embed):
+## Contributing
 
-```typescript
-import { type FunctionDeclaration, SchemaType } from "@google/generative-ai";
-import { useEffect, useRef, useState, memo } from "react";
-import vegaEmbed from "vega-embed";
-import { useLiveAPIContext } from "../../contexts/LiveAPIContext";
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-export const declaration: FunctionDeclaration = {
-  name: "render_altair",
-  description: "Displays an altair graph in json format.",
-  parameters: {
-    type: SchemaType.OBJECT,
-    properties: {
-      json_graph: {
-        type: SchemaType.STRING,
-        description:
-          "JSON STRING representation of the graph to render. Must be a string, not a json object",
-      },
-    },
-    required: ["json_graph"],
-  },
-};
+## License
 
-export function Altair() {
-  const [jsonString, setJSONString] = useState<string>("");
-  const { client, setConfig } = useLiveAPIContext();
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-  useEffect(() => {
-    setConfig({
-      model: "models/gemini-2.0-flash-exp",
-      systemInstruction: {
-        parts: [
-          {
-            text: 'You are my helpful assistant. Any time I ask you for a graph call the "render_altair" function I have provided you. Dont ask for additional information just make your best judgement.',
-          },
-        ],
-      },
-      tools: [{ googleSearch: {} }, { functionDeclarations: [declaration] }],
-    });
-  }, [setConfig]);
+## Acknowledgments
 
-  useEffect(() => {
-    const onToolCall = (toolCall: ToolCall) => {
-      console.log(`got toolcall`, toolCall);
-      const fc = toolCall.functionCalls.find(
-        (fc) => fc.name === declaration.name
-      );
-      if (fc) {
-        const str = (fc.args as any).json_graph;
-        setJSONString(str);
-      }
-    };
-    client.on("toolcall", onToolCall);
-    return () => {
-      client.off("toolcall", onToolCall);
-    };
-  }, [client]);
+- Built using Google's Gemini API
+- Inspired by real-world interview experiences
+- Special thanks to the open-source community
 
-  const embedRef = useRef<HTMLDivElement>(null);
+---
 
-  useEffect(() => {
-    if (embedRef.current && jsonString) {
-      vegaEmbed(embedRef.current, JSON.parse(jsonString));
-    }
-  }, [embedRef, jsonString]);
-  return <div className="vega-embed" ref={embedRef} />;
-}
-```
-
-## development
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-Project consists of:
-
-- an Event-emitting websocket-client to ease communication between the websocket and the front-end
-- communication layer for processing audio in and out
-- a boilerplate view for starting to build your apps and view logs
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-_This is an experiment showcasing the Live API, not an official Google product. We’ll do our best to support and maintain this experiment but your mileage may vary. We encourage open sourcing projects as a way of learning from each other. Please respect our and other creators' rights, including copyright and trademark rights when present, when sharing these works and creating derivative work. If you want more info on Google's policy, you can find that [here](https://developers.google.com/terms/site-policies)._
+For questions or support, please open an issue in the repository.
