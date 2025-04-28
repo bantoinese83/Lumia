@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { useState, useEffect } from "react";
-import { UseMediaStreamResult } from "./use-media-stream-mux";
+import { useEffect, useState } from 'react';
+
+import { UseMediaStreamResult } from './use-media-stream-mux';
 
 export function useScreenCapture(): UseMediaStreamResult {
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -27,15 +28,9 @@ export function useScreenCapture(): UseMediaStreamResult {
       setStream(null);
     };
     if (stream) {
-      stream
-        .getTracks()
-        .forEach((track) => track.addEventListener("ended", handleStreamEnded));
+      stream.getTracks().forEach(track => track.addEventListener('ended', handleStreamEnded));
       return () => {
-        stream
-          .getTracks()
-          .forEach((track) =>
-            track.removeEventListener("ended", handleStreamEnded),
-          );
+        stream.getTracks().forEach(track => track.removeEventListener('ended', handleStreamEnded));
       };
     }
   }, [stream]);
@@ -54,14 +49,14 @@ export function useScreenCapture(): UseMediaStreamResult {
 
   const stop = () => {
     if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
+      stream.getTracks().forEach(track => track.stop());
       setStream(null);
       setIsStreaming(false);
     }
   };
 
   const result: UseMediaStreamResult = {
-    type: "screen",
+    type: 'screen',
     start,
     stop,
     isStreaming,

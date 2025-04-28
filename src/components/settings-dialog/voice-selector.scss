@@ -1,0 +1,40 @@
+.voice-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--Neutral-20);
+  }
+
+  .voice-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    object-fit: cover;
+  }
+
+  .voice-info {
+    flex: 1;
+
+    .voice-name {
+      color: var(--Neutral-90);
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .voice-role {
+      color: var(--Neutral-60);
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+
+    .voice-company {
+      color: var(--Blue-500);
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+  }
+} 

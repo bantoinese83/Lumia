@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { AudioStreamer } from '../lib/audio-streamer';
 import {
   MultimodalLiveAPIClientConnection,
   MultimodalLiveClient,
-} from "../lib/multimodal-live-client";
-import { LiveConfig } from "../multimodal-live-types";
-import { AudioStreamer } from "../lib/audio-streamer";
-import { audioContext } from "../lib/utils";
-import VolMeterWorket from "../lib/worklets/vol-meter";
+} from '../lib/multimodal-live-client';
+import { audioContext } from '../lib/utils';
+import VolMeterWorket from '../lib/worklets/vol-meter';
+import { LiveConfig } from '../multimodal-live-types';
 
 export type UseLiveAPIResults = {
   client: MultimodalLiveClient;
@@ -34,29 +35,23 @@ export type UseLiveAPIResults = {
   volume: number;
 };
 
-export function useLiveAPI({
-  url,
-  apiKey,
-}: MultimodalLiveAPIClientConnection): UseLiveAPIResults {
-  const client = useMemo(
-    () => new MultimodalLiveClient({ url, apiKey }),
-    [url, apiKey],
-  );
+export function useLiveAPI({ url, apiKey }: MultimodalLiveAPIClientConnection): UseLiveAPIResults {
+  const client = useMemo(() => new MultimodalLiveClient({ url, apiKey }), [url, apiKey]);
   const audioStreamerRef = useRef<AudioStreamer | null>(null);
 
   const [connected, setConnected] = useState(false);
   const [config, setConfig] = useState<LiveConfig>({
-    model: "models/gemini-2.0-flash-exp",
+    model: 'models/gemini-2.0-flash-exp',
   });
   const [volume, setVolume] = useState(0);
 
   // register audio for streaming server -> speakers
   useEffect(() => {
     if (!audioStreamerRef.current) {
-      audioContext({ id: "audio-out" }).then((audioCtx: AudioContext) => {
+      audioContext({ id: 'audio-out' }).then((audioCtx: AudioContext) => {
         audioStreamerRef.current = new AudioStreamer(audioCtx);
         audioStreamerRef.current
-          .addWorklet<any>("vumeter-out", VolMeterWorket, (ev: any) => {
+          .addWorklet<any>('vumeter-out', VolMeterWorket, (ev: any) => {
             setVolume(ev.data.volume);
           })
           .then(() => {
@@ -73,26 +68,19 @@ export function useLiveAPI({
 
     const stopAudioStreamer = () => audioStreamerRef.current?.stop();
 
-    const onAudio = (data: ArrayBuffer) =>
-      audioStreamerRef.current?.addPCM16(new Uint8Array(data));
+    const onAudio = (data: ArrayBuffer) => audioStreamerRef.current?.addPCM16(new Uint8Array(data));
 
-    client
-      .on("close", onClose)
-      .on("interrupted", stopAudioStreamer)
-      .on("audio", onAudio);
+    client.on('close', onClose).on('interrupted', stopAudioStreamer).on('audio', onAudio);
 
     return () => {
-      client
-        .off("close", onClose)
-        .off("interrupted", stopAudioStreamer)
-        .off("audio", onAudio);
+      client.off('close', onClose).off('interrupted', stopAudioStreamer).off('audio', onAudio);
     };
   }, [client]);
 
   const connect = useCallback(async () => {
     console.log(config);
     if (!config) {
-      throw new Error("config has not been set");
+      throw new Error('config has not been set');
     }
     client.disconnect();
     await client.connect(config);

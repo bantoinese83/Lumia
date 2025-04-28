@@ -1,0 +1,40 @@
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--Neutral-5);
+  border-bottom: 1px solid var(--Neutral-30);
+  position: relative;
+  z-index: 1;
+
+  .branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .logo {
+      font-size: 32px;
+      color: var(--Blue-500);
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 500;
+      margin: 0;
+      color: var(--Neutral-90);
+    }
+
+    .subtitle {
+      color: var(--Neutral-60);
+      font-size: 14px;
+      margin-left: 4px;
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+} 

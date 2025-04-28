@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { create } from "zustand";
-import { StreamingLog } from "../multimodal-live-types";
-import { mockLogs } from "../components/logger/mock-logs";
+import { create } from 'zustand';
+
+import { StreamingLog } from '../multimodal-live-types';
 
 interface StoreLoggerState {
   maxLogs: number;
@@ -29,7 +29,7 @@ export const useLoggerStore = create<StoreLoggerState>((set, get) => ({
   maxLogs: 500,
   logs: [], //mockLogs,
   log: ({ date, type, message }: StreamingLog) => {
-    set((state) => {
+    set(state => {
       const prevLog = state.logs.at(-1);
       if (prevLog && prevLog.type === type && prevLog.message === message) {
         return {
@@ -58,7 +58,7 @@ export const useLoggerStore = create<StoreLoggerState>((set, get) => ({
   },
 
   clearLogs: () => {
-    console.log("clear log");
+    console.log('clear log');
     set({ logs: [] });
   },
   setMaxLogs: (n: number) => set({ maxLogs: n }),
