@@ -1,0 +1,217 @@
+.transcript-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: var(--Neutral-15);
+  border-radius: 16px;
+  padding: 20px;
+  height: 100%;
+  max-height: 600px;
+  overflow: hidden;
+
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--Red-500);
+    color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    animation: slide-in 0.3s ease;
+
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .metrics-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 16px;
+    background: var(--Neutral-20);
+    border-radius: 12px;
+    border: 1px solid var(--Neutral-30);
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .metric-label {
+        color: var(--Neutral-60);
+        font-size: 14px;
+      }
+
+      .metric-value {
+        position: relative;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        color: var(--Neutral-90);
+        font-size: 16px;
+        font-weight: 500;
+
+        .progress-bar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          background: var(--Blue-500);
+          opacity: 0.2;
+          border-radius: 6px;
+          transition: width 0.3s ease;
+        }
+
+        span {
+          position: relative;
+          z-index: 1;
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+
+  .transcript-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 16px;
+    margin-right: -16px;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--Neutral-20);
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--Neutral-30);
+      border-radius: 4px;
+
+      &:hover {
+        background: var(--Neutral-40);
+      }
+    }
+  }
+
+  .transcript-segment {
+    margin-bottom: 24px;
+    animation: fade-in 0.3s ease;
+
+    &.user {
+      margin-left: 40px;
+
+      .segment-content {
+        background: var(--Blue-500);
+        border-radius: 16px 16px 0 16px;
+      }
+    }
+
+    &.interviewer {
+      margin-right: 40px;
+
+      .segment-content {
+        background: var(--Neutral-20);
+        border-radius: 16px 16px 16px 0;
+      }
+    }
+
+    .segment-content {
+      padding: 16px;
+      color: var(--Neutral-90);
+      font-size: 16px;
+      line-height: 1.5;
+
+      .word {
+        display: inline-block;
+        position: relative;
+        margin: 0 2px;
+
+        &.filler {
+          color: var(--Red-400);
+          text-decoration: line-through;
+          opacity: 0.7;
+        }
+
+        &.technical {
+          color: var(--Blue-400);
+          font-weight: 500;
+        }
+
+        &.stop {
+          opacity: 0.6;
+        }
+      }
+    }
+
+    .feedback-panel {
+      margin-top: 8px;
+      padding: 12px;
+      background: var(--Neutral-20);
+      border-radius: 12px;
+      border: 1px solid var(--Neutral-30);
+
+      .feedback-metrics {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--Neutral-30);
+
+        span {
+          color: var(--Neutral-80);
+          font-size: 14px;
+        }
+      }
+
+      .feedback-suggestions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .suggestion {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: var(--Neutral-80);
+          font-size: 14px;
+
+          .material-symbols-outlined {
+            color: var(--Blue-500);
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+} 

@@ -73,76 +73,155 @@ body {
   justify-content: center;
   padding: 24px;
   min-height: 0;
-}
 
-.stream-container {
-  display: flex;
-  width: 100%;
-  max-width: 1600px;
-  aspect-ratio: 16/9;
-  gap: 24px;
-  height: auto;
-  max-height: calc(100vh - 300px);
-  border-radius: 24px;
-  overflow: hidden;
-  background: var(--Neutral-20);
-  padding: 12px;
-  box-sizing: border-box;
-  margin-bottom: 100px;
+  .content-container {
+    display: flex;
+    width: 100%;
+    max-width: 1600px;
+    gap: 24px;
+    height: calc(100vh - 300px);
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    aspect-ratio: auto;
-    gap: 12px;
-    padding: 8px;
+    @media (max-width: 1200px) {
+      flex-direction: column;
+      height: auto;
+    }
   }
 
-  .stream {
+  .stream-container {
     flex: 1;
-    border-radius: 16px;
+    display: flex;
+    gap: 24px;
+    aspect-ratio: 16/9;
+    border-radius: 24px;
     overflow: hidden;
     background: var(--Neutral-20);
-    object-fit: cover;
-    min-height: 0;
-    
-    &.hidden {
-      display: none;
+    padding: 12px;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      aspect-ratio: auto;
+      gap: 12px;
+      padding: 8px;
+    }
+
+    .video-stream {
+      flex: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--Neutral-20);
+      min-height: 0;
+      position: relative;
+
+      &.user-stream {
+        .placeholder-avatar {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: var(--Neutral-15);
+          color: var(--Neutral-60);
+          
+          .material-symbols-outlined {
+            font-size: 48px;
+            margin-bottom: 8px;
+          }
+
+          .label {
+            font-size: 14px;
+          }
+        }
+      }
+      
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        
+        &.hidden {
+          display: none;
+        }
+      }
+
+      @media (max-width: 768px) {
+        min-height: 300px;
+      }
+    }
+
+    .interviewer-stream {
+      position: relative;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      flex: 1;
+
+      .interviewer-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+        color: white;
+
+        h3 {
+          font-size: 1.25rem;
+          margin: 0 0 4px 0;
+          font-weight: 500;
+        }
+
+        p {
+          margin: 0;
+          font-size: 0.875rem;
+          opacity: 0.8;
+
+          &:last-child {
+            color: var(--Blue-400);
+          }
+        }
+      }
+    }
+  }
+
+  .side-panel {
+    width: 400px;
+    min-width: 400px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .interview-timer {
+      flex-shrink: 0;
+    }
+
+    .interview-metrics {
+      flex-shrink: 0;
+    }
+
+    .transcript-wrapper {
+      flex: 1;
+      min-height: 0;
+      max-height: calc(100vh - 600px);
+      overflow-y: auto;
+    }
+
+    @media (max-width: 1200px) {
+      width: 100%;
+      min-width: 0;
+      height: auto;
+
+      .transcript-wrapper {
+        height: 400px;
+        max-height: none;
+      }
     }
 
     @media (max-width: 768px) {
-      min-height: 300px;
-    }
-  }
-
-  .interviewer-stream {
-    position: relative;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-
-    .interviewer-info {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 20px;
-      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-      color: white;
-
-      h3 {
-        font-size: 1.25rem;
-        margin: 0 0 4px 0;
-        font-weight: 500;
-      }
-
-      p {
-        margin: 0;
-        font-size: 0.875rem;
-        opacity: 0.8;
-
-        &:last-child {
-          color: var(--Blue-400);
-        }
+      .transcript-wrapper {
+        height: 300px;
       }
     }
   }

@@ -228,6 +228,14 @@ export default function SettingsDialog() {
       ...prev,
       [field]: value
     }));
+
+    // Update LiveConfig when duration changes
+    if (field === 'duration') {
+      setConfig({
+        ...config,
+        interviewDuration: value
+      });
+    }
   };
 
   const toggleSkill = (skill: string) => {

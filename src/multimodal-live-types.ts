@@ -39,6 +39,7 @@ export type LiveConfig = {
   systemInstruction?: { parts: Part[] };
   generationConfig?: Partial<LiveGenerationConfig>;
   tools?: Array<Tool | { googleSearch: {} } | { codeExecution: {} }>;
+  interviewDuration?: number; // Duration in minutes
 };
 
 export type LiveGenerationConfig = GenerationConfig & {
